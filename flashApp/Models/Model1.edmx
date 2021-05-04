@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="smappModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="appUser">
+          <Key>
+            <PropertyRef Name="userName" />
+          </Key>
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="pwd" Type="varchar" MaxLength="100" />
+          <Property Name="dob" Type="datetime" Nullable="false" />
+          <Property Name="mailID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="profilePic" Type="varchar" MaxLength="500" />
+          <Property Name="bio" Type="varchar" MaxLength="100" />
+          <Property Name="lastUpdate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="postResponse">
+          <Key>
+            <PropertyRef Name="postId" />
+            <PropertyRef Name="userName" />
+          </Key>
+          <Property Name="postId" Type="bigint" Nullable="false" />
+          <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="comment" Type="varchar" MaxLength="100" />
+          <Property Name="pLike" Type="bit" />
+          <Property Name="readStatus" Type="bit" />
+        </EntityType>
+        <EntityType Name="userFollower">
+          <Key>
+            <PropertyRef Name="userName" />
+            <PropertyRef Name="followerUN" />
+          </Key>
+          <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="followerUN" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="prox" Type="int" />
+        </EntityType>
+        <EntityType Name="userPost">
+          <Key>
+            <PropertyRef Name="postId" />
+          </Key>
+          <Property Name="postId" Type="bigint" Nullable="false" />
+          <Property Name="userName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="caption" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="contentIMG" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="postTime" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__postRespo__postI__30F848ED">
+          <End Role="userPost" Type="Self.userPost" Multiplicity="1" />
+          <End Role="postResponse" Type="Self.postResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="userPost">
+              <PropertyRef Name="postId" />
+            </Principal>
+            <Dependent Role="postResponse">
+              <PropertyRef Name="postId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__postRespo__userN__31EC6D26">
+          <End Role="appUser" Type="Self.appUser" Multiplicity="1" />
+          <End Role="postResponse" Type="Self.postResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appUser">
+              <PropertyRef Name="userName" />
+            </Principal>
+            <Dependent Role="postResponse">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userFollo__follo__29572725">
+          <End Role="appUser" Type="Self.appUser" Multiplicity="1" />
+          <End Role="userFollower" Type="Self.userFollower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appUser">
+              <PropertyRef Name="userName" />
+            </Principal>
+            <Dependent Role="userFollower">
+              <PropertyRef Name="followerUN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userFollo__userN__286302EC">
+          <End Role="appUser" Type="Self.appUser" Multiplicity="1" />
+          <End Role="userFollower" Type="Self.userFollower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appUser">
+              <PropertyRef Name="userName" />
+            </Principal>
+            <Dependent Role="userFollower">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userPost__userNa__2D27B809">
+          <End Role="appUser" Type="Self.appUser" Multiplicity="1" />
+          <End Role="userPost" Type="Self.userPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appUser">
+              <PropertyRef Name="userName" />
+            </Principal>
+            <Dependent Role="userPost">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="smappModelStoreContainer">
+          <EntitySet Name="appUser" EntityType="Self.appUser" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="postResponse" EntityType="Self.postResponse" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="userFollower" EntityType="Self.userFollower" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="userPost" EntityType="Self.userPost" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__postRespo__postI__30F848ED" Association="Self.FK__postRespo__postI__30F848ED">
+            <End Role="userPost" EntitySet="userPost" />
+            <End Role="postResponse" EntitySet="postResponse" />
+          </AssociationSet>
+          <AssociationSet Name="FK__postRespo__userN__31EC6D26" Association="Self.FK__postRespo__userN__31EC6D26">
+            <End Role="appUser" EntitySet="appUser" />
+            <End Role="postResponse" EntitySet="postResponse" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userFollo__follo__29572725" Association="Self.FK__userFollo__follo__29572725">
+            <End Role="appUser" EntitySet="appUser" />
+            <End Role="userFollower" EntitySet="userFollower" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userFollo__userN__286302EC" Association="Self.FK__userFollo__userN__286302EC">
+            <End Role="appUser" EntitySet="appUser" />
+            <End Role="userFollower" EntitySet="userFollower" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userPost__userNa__2D27B809" Association="Self.FK__userPost__userNa__2D27B809">
+            <End Role="appUser" EntitySet="appUser" />
+            <End Role="userPost" EntitySet="userPost" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="smappModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="appUser">
+          <Key>
+            <PropertyRef Name="userName" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="pwd" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="dob" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="mailID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="profilePic" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="bio" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="lastUpdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="postResponses" Relationship="Self.FK__postRespo__userN__31EC6D26" FromRole="appUser" ToRole="postResponse" />
+          <NavigationProperty Name="userFollowers" Relationship="Self.FK__userFollo__follo__29572725" FromRole="appUser" ToRole="userFollower" />
+          <NavigationProperty Name="userFollowers1" Relationship="Self.FK__userFollo__userN__286302EC" FromRole="appUser" ToRole="userFollower" />
+          <NavigationProperty Name="userPosts" Relationship="Self.FK__userPost__userNa__2D27B809" FromRole="appUser" ToRole="userPost" />
+        </EntityType>
+        <EntityType Name="postResponse">
+          <Key>
+            <PropertyRef Name="postId" />
+            <PropertyRef Name="userName" />
+          </Key>
+          <Property Name="postId" Type="Int64" Nullable="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="comment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="pLike" Type="Boolean" />
+          <Property Name="readStatus" Type="Boolean" />
+          <NavigationProperty Name="appUser" Relationship="Self.FK__postRespo__userN__31EC6D26" FromRole="postResponse" ToRole="appUser" />
+          <NavigationProperty Name="userPost" Relationship="Self.FK__postRespo__postI__30F848ED" FromRole="postResponse" ToRole="userPost" />
+        </EntityType>
+        <EntityType Name="userFollower">
+          <Key>
+            <PropertyRef Name="userName" />
+            <PropertyRef Name="followerUN" />
+          </Key>
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="followerUN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="prox" Type="Int32" />
+          <NavigationProperty Name="appUser" Relationship="Self.FK__userFollo__follo__29572725" FromRole="userFollower" ToRole="appUser" />
+          <NavigationProperty Name="appUser1" Relationship="Self.FK__userFollo__userN__286302EC" FromRole="userFollower" ToRole="appUser" />
+        </EntityType>
+        <EntityType Name="userPost">
+          <Key>
+            <PropertyRef Name="postId" />
+          </Key>
+          <Property Name="postId" Type="Int64" Nullable="false" />
+          <Property Name="userName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="caption" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="contentIMG" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="postTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="appUser" Relationship="Self.FK__userPost__userNa__2D27B809" FromRole="userPost" ToRole="appUser" />
+          <NavigationProperty Name="postResponses" Relationship="Self.FK__postRespo__postI__30F848ED" FromRole="userPost" ToRole="postResponse" />
+        </EntityType>
+        <Association Name="FK__postRespo__userN__31EC6D26">
+          <End Role="appUser" Type="Self.appUser" Multiplicity="1" />
+          <End Role="postResponse" Type="Self.postResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appUser">
+              <PropertyRef Name="userName" />
+            </Principal>
+            <Dependent Role="postResponse">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userFollo__follo__29572725">
+          <End Role="appUser" Type="Self.appUser" Multiplicity="1" />
+          <End Role="userFollower" Type="Self.userFollower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appUser">
+              <PropertyRef Name="userName" />
+            </Principal>
+            <Dependent Role="userFollower">
+              <PropertyRef Name="followerUN" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userFollo__userN__286302EC">
+          <End Role="appUser" Type="Self.appUser" Multiplicity="1" />
+          <End Role="userFollower" Type="Self.userFollower" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appUser">
+              <PropertyRef Name="userName" />
+            </Principal>
+            <Dependent Role="userFollower">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__userPost__userNa__2D27B809">
+          <End Role="appUser" Type="Self.appUser" Multiplicity="1" />
+          <End Role="userPost" Type="Self.userPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="appUser">
+              <PropertyRef Name="userName" />
+            </Principal>
+            <Dependent Role="userPost">
+              <PropertyRef Name="userName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__postRespo__postI__30F848ED">
+          <End Role="userPost" Type="Self.userPost" Multiplicity="1" />
+          <End Role="postResponse" Type="Self.postResponse" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="userPost">
+              <PropertyRef Name="postId" />
+            </Principal>
+            <Dependent Role="postResponse">
+              <PropertyRef Name="postId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="smappEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="appUsers" EntityType="Self.appUser" />
+          <EntitySet Name="postResponses" EntityType="Self.postResponse" />
+          <EntitySet Name="userFollowers" EntityType="Self.userFollower" />
+          <EntitySet Name="userPosts" EntityType="Self.userPost" />
+          <AssociationSet Name="FK__postRespo__userN__31EC6D26" Association="Self.FK__postRespo__userN__31EC6D26">
+            <End Role="appUser" EntitySet="appUsers" />
+            <End Role="postResponse" EntitySet="postResponses" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userFollo__follo__29572725" Association="Self.FK__userFollo__follo__29572725">
+            <End Role="appUser" EntitySet="appUsers" />
+            <End Role="userFollower" EntitySet="userFollowers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userFollo__userN__286302EC" Association="Self.FK__userFollo__userN__286302EC">
+            <End Role="appUser" EntitySet="appUsers" />
+            <End Role="userFollower" EntitySet="userFollowers" />
+          </AssociationSet>
+          <AssociationSet Name="FK__userPost__userNa__2D27B809" Association="Self.FK__userPost__userNa__2D27B809">
+            <End Role="appUser" EntitySet="appUsers" />
+            <End Role="userPost" EntitySet="userPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__postRespo__postI__30F848ED" Association="Self.FK__postRespo__postI__30F848ED">
+            <End Role="userPost" EntitySet="userPosts" />
+            <End Role="postResponse" EntitySet="postResponses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="smappModelStoreContainer" CdmEntityContainer="smappEntities">
+          <EntitySetMapping Name="appUsers">
+            <EntityTypeMapping TypeName="smappModel.appUser">
+              <MappingFragment StoreEntitySet="appUser">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="pwd" ColumnName="pwd" />
+                <ScalarProperty Name="dob" ColumnName="dob" />
+                <ScalarProperty Name="mailID" ColumnName="mailID" />
+                <ScalarProperty Name="profilePic" ColumnName="profilePic" />
+                <ScalarProperty Name="bio" ColumnName="bio" />
+                <ScalarProperty Name="lastUpdate" ColumnName="lastUpdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="postResponses">
+            <EntityTypeMapping TypeName="smappModel.postResponse">
+              <MappingFragment StoreEntitySet="postResponse">
+                <ScalarProperty Name="postId" ColumnName="postId" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="comment" ColumnName="comment" />
+                <ScalarProperty Name="pLike" ColumnName="pLike" />
+                <ScalarProperty Name="readStatus" ColumnName="readStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userFollowers">
+            <EntityTypeMapping TypeName="smappModel.userFollower">
+              <MappingFragment StoreEntitySet="userFollower">
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="followerUN" ColumnName="followerUN" />
+                <ScalarProperty Name="prox" ColumnName="prox" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userPosts">
+            <EntityTypeMapping TypeName="smappModel.userPost">
+              <MappingFragment StoreEntitySet="userPost">
+                <ScalarProperty Name="postId" ColumnName="postId" />
+                <ScalarProperty Name="userName" ColumnName="userName" />
+                <ScalarProperty Name="caption" ColumnName="caption" />
+                <ScalarProperty Name="contentIMG" ColumnName="contentIMG" />
+                <ScalarProperty Name="postTime" ColumnName="postTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
